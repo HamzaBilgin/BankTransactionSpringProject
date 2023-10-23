@@ -1,6 +1,8 @@
 package com.bank.springbank.rest;
 
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,30 +47,43 @@ public class CustomerRestController {
 	}
 	
 	
-	@PutMapping("/update/{customerId}")
+	@PutMapping("/updateCustomer/{customerId}")
 	public Customer updateCustomer(@RequestBody Customer customer, @PathVariable(name = "customerId") Long customerId) {
 		
 		Customer savedCustomer = customerService.findCustomerById(customerId);
-		System.out.println("adw : " +savedCustomer );
-		String customerName = (customer.getCustomerName() == null) ? savedCustomer.getCustomerName() : customer.getCustomerName(); 
-		String customerLastName = (customer.getCustomerLastName() == null) ? savedCustomer.getCustomerLastName() : customer.getCustomerLastName(); 		
-		Integer customerBankAmount = (customer.getCustomerBankAmount() == null) ? savedCustomer.getCustomerBankAmount() : customer.getCustomerBankAmount(); 
+		String customerName = (customer.getName() == null) ? savedCustomer.getName() : customer.getName(); 
+		String customerLastName = (customer.getLastName() == null) ? savedCustomer.getLastName() : customer.getLastName(); 		
+		Integer customerBankAmount = (customer.getBankAmount() == null) ? savedCustomer.getBankAmount() : customer.getBankAmount();
+		Integer customerPassword = (customer.getNewPassword() == null) ? savedCustomer.getPassword() : customer.getNewPassword();
 		
+		 LocalTime localTimeNow = LocalTime.now();
+		 LocalTime timeWithoutNanos = localTimeNow.withNano(0);
+		 
 		savedCustomer.setCustomerId(savedCustomer.getCustomerId());
-		savedCustomer.setCustomerName(customerName);
-		savedCustomer.setCustomerLastName(customerLastName);
-		savedCustomer.setCustomerRegisterDate(savedCustomer.getCustomerRegisterDate());
-		savedCustomer.setCustomerBankAmount(customerBankAmount);
+		savedCustomer.setName(customerName);
+		savedCustomer.setLastName(customerLastName);
+		savedCustomer.setPassword(customerPassword);
+		savedCustomer.setCreatedDate(savedCustomer.getCreatedDate());
+		savedCustomer.setUpdatedDate(timeWithoutNanos);
+		savedCustomer.setBankAmount(customerBankAmount);
 		
 		System.out.println("bbb : " + savedCustomer);
 		return customerService.updateCustomer(savedCustomer);			
 	}
+
 	
 	@DeleteMapping("/deleteCustomerById/{customerId}")
 	public Boolean deleteCustomerById(@PathVariable(name = "customerId") Long customerId) {
 		
 		return customerService.deleteCustomerById(customerId) ? true:false;
 		
+	}
+	
+	@PostMapping("/customerLogin")
+	private Boolean customerLogin(@RequestBody Map<String, String> request) {
+	    Long customerId = Long.parseLong(request.get("customerId"));
+	    Integer password = Integer.parseInt(request.get("password"));
+	    return customerService.customerLogin(customerId, password);
 	}
 	
 }

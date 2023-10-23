@@ -6,15 +6,13 @@ import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -26,7 +24,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class Customer {
+public class Customer extends BaseEntity{
 	
 //	@Id
 //	@GeneratedValue(strategy = GenerationType.AUTO,generator = "uuid2")
@@ -43,24 +41,10 @@ public class Customer {
 	@Setter
 	private Long customerId;
 	
-	@Column(length = 200, nullable = false)
-	@Getter
-	@Setter
-	private String customerName;
-	
-	@Column(length = 2500, nullable = false)
-	@Getter
-	@Setter
-	private String customerLastName;
-	
-	
-	@Getter
-	@Setter
-	private LocalTime customerRegisterDate;
 
 	@Getter
 	@Setter
-	private Integer customerBankAmount;
+	private Integer bankAmount;
 
 
 	
