@@ -60,8 +60,6 @@ public class CustomerService {
 	
 	public Boolean customerLogin(Long customerId, Integer password2) {
 	    Integer password = customerDao.findCustomerPassword(customerId);
-	    System.out.println("aaaaaaaaaaaa : " + password);
-	    System.out.println("aaaaaaaaaaaa2 : " + password2);
 	    return password != null && password.equals(password2);
 	}
 	
