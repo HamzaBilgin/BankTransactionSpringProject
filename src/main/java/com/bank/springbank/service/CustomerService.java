@@ -40,8 +40,8 @@ public class CustomerService {
 		return customerDao.save(customer);
 	}
 	
-	public Customer findCustomerById(Long customerId) {
-		return customerDao.findCustomerById(customerId);
+	public Customer findCustomerById(Long id) {
+		return customerDao.findCustomerById(id);
 	}
 	
 	public List<Customer> getCustomerList() {

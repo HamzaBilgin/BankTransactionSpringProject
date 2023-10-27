@@ -16,22 +16,22 @@ import com.bank.springbank.model.Customer;
 @Repository
 public interface CustomerDao extends JpaRepository<Customer, Long>{
 	
-	@Query("SELECT c FROM Customer c WHERE c.customerId = ?1")
-	public Customer findCustomerById(Long customerId);
+	@Query("SELECT c FROM Customer c WHERE c.id = ?1")
+	public Customer findCustomerById(Long id);
 
 	
-	@Query("DELETE FROM Customer c WHERE c.customerId = ?1")
-	public void deleteCustomerById(Long customerId);
+	@Query("DELETE FROM Customer c WHERE c.id = ?1")
+	public void deleteCustomerById(Long id);
 
 
 	
 	@Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
 	@Modifying
-	@Query("UPDATE Customer c SET c.name = :nameParameter WHERE c.customerId = :customerIdParameter")
-	public Integer updateCustomer(@Param("nameParameter") String customerName,@Param("customerIdParameter") Long customerId);
+	@Query("UPDATE Customer c SET c.name = :nameParameter WHERE c.id = :idParameter")
+	public Integer updateCustomer(@Param("nameParameter") String customerName,@Param("idParameter") Long id);
 
 
-	@Query("SELECT c.password FROM Customer c WHERE c.customerId = :customerIdParameter")
-	public Integer findCustomerPassword(@Param("customerIdParameter") Long customerId);
+	@Query("SELECT c.password FROM Customer c WHERE c.id = :idParameter")
+	public Integer findCustomerPassword(@Param("idParameter") Long id);
 
 }

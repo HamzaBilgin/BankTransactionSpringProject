@@ -34,12 +34,7 @@ public class Customer extends BaseEntity{
 //    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
 //	private UUID customerUuid;
 //	
-	@Id
-	@Column(unique = true,length = 11, nullable = false)
-	@NotNull(message = "customerId field is required")
-	@Getter
-	@Setter
-	private Long customerId;
+
 	
 
 	@Getter

@@ -32,14 +32,9 @@ public class CustomerRestController {
 	private ResponseHandler responseHandler;
 	
 	@PostMapping("/save")
-	public ResponseEntity<?> saveCustomer(@RequestBody Customer customer) {
-	    
-//	    return ResponseEntity.ok(customerService.saveCustomer(customer));
-	    
-	   
-	    
+	public ResponseEntity<?> saveCustomer(@RequestBody Customer customer) {	    
 	    try {
-	    	if (customer.getCustomerId() != null) {
+	    	if (customer.getId() != null) {
 	    		 Customer savedCustomer = customerService.saveCustomer(customer);
 	 	        return responseHandler.resultMessageResponse(200, "customer", savedCustomer, "message", "Müşteri kaydedildi.");
 		        
@@ -52,24 +47,21 @@ public class CustomerRestController {
 	        // Hata durumunda bir hata mesajı döndür
 	    	return responseHandler.resultMessageResponse( 400,new Object[]{"result", "Başarısız", "message", "Beklenmeye Hata"});
 	    }
-	}
-	
-	@GetMapping("/findCustomerById/{customerId}")
+	}	
+	@GetMapping("/findCustomerById/{id}")
 	private ResponseEntity<Object> findCustomerById(
-			@PathVariable(name = "customerId") Long customerId) {
+			@PathVariable(name = "id") Long id) {
 		try {
-			if(customerService.findCustomerById(customerId) != null) {
-				return responseHandler.resultMessageResponse( 200,new Object[]{"Customer", customerService.findCustomerById(customerId)});
+			if(customerService.findCustomerById(id) != null) {
+				return responseHandler.resultMessageResponse( 200,new Object[]{"Customer", customerService.findCustomerById(id)});
 			}
 			else {
 				return responseHandler.resultMessageResponse( 200,new Object[]{"result", "Başarılı", "message", "Müşteri Bulunamadı!"});
 			}
 		} catch (Exception e) {
 			return responseHandler.resultMessageResponse( 400,new Object[]{"result", "Başarısız", "message", "Beklenmeye Hata"});
-		}
-		
-	}
-	
+		}		
+	}	
 	@GetMapping("/customerList")
 	public ResponseEntity<Object> getCustomerList() {
 		try {
@@ -81,17 +73,13 @@ public class CustomerRestController {
 		} catch (Exception e) {
 			return responseHandler.resultMessageResponse( 400,new Object[]{"result", "Başarısız", "message", "Beklenmeye Hata"});
 		}
-	}
-	
-	
-	@PutMapping("/updateCustomer/{customerId}")
-	public ResponseEntity<Object> updateCustomer(@RequestBody Customer customer, @PathVariable(name = "customerId") Long customerId) {
-		
-		
+	}		
+	@PutMapping("/updateCustomer/{id}")
+	public ResponseEntity<Object> updateCustomer(@RequestBody Customer customer, @PathVariable(name = "id") Long id) {	
 		try {
 			
-			if(customerService.findCustomerById(customerId) != null) {
-				Customer savedCustomer = customerService.findCustomerById(customerId);
+			if(customerService.findCustomerById(id) != null) {
+				Customer savedCustomer = customerService.findCustomerById(id);
 				String customerName = (customer.getName() == null) ? savedCustomer.getName() : customer.getName(); 
 				String customerLastName = (customer.getLastName() == null) ? savedCustomer.getLastName() : customer.getLastName(); 		
 				Integer customerBankAmount = (customer.getBankAmount() == null) ? savedCustomer.getBankAmount() : customer.getBankAmount();
@@ -100,7 +88,7 @@ public class CustomerRestController {
 				LocalTime localTimeNow = LocalTime.now();
 				LocalTime timeWithoutNanos = localTimeNow.withNano(0);
 				 
-				savedCustomer.setCustomerId(savedCustomer.getCustomerId());
+				savedCustomer.setId(savedCustomer.getId());
 				savedCustomer.setName(customerName);
 				savedCustomer.setLastName(customerLastName);
 				savedCustomer.setPassword(customerPassword);
@@ -111,20 +99,18 @@ public class CustomerRestController {
 			}else {
 				return responseHandler.resultMessageResponse( 200,new Object[]{"result","Başarılı","message", "Hiç müşteri kayıtlı değil"});
 			}
-			
-	
-			
+		
 		} catch (Exception e) {
 			return responseHandler.resultMessageResponse( 400,new Object[]{"result", "Başarısız", "message", "Beklenmeye Hata"});
 		}
 	}
 
 	
-	@DeleteMapping("/deleteCustomerById/{customerId}")
-	public ResponseEntity<Object> deleteCustomerById(@PathVariable(name = "customerId") Long customerId) {
+	@DeleteMapping("/deleteCustomerById/{id}")
+	public ResponseEntity<Object> deleteCustomerById(@PathVariable(name = "id") Long id) {
 		
 		try {
-			if(customerService.deleteCustomerById(customerId) == true) {
+			if(customerService.deleteCustomerById(id) == true) {
 				return responseHandler.resultMessageResponse( 200,new Object[]{"result", true,"message", "Silme işlemi başarılı"});
 			}else {
 				return responseHandler.resultMessageResponse( 200,new Object[]{"result", false,"message", "Silme işlemi başarısız"});
@@ -156,9 +142,7 @@ public class CustomerRestController {
         	return responseHandler.resultMessageResponse( 400,new Object[]{"result", true, "message", "Hatalı giriş bilgileri"});
         }catch (Exception e) {
 			return responseHandler.resultMessageResponse( 400,new Object[]{"result", "Başarısız", "message", "Beklenmeye Hata"});
-		}
-        
-        
+		} 
     }
 	
 }
