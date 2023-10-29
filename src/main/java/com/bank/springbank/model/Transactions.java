@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -27,13 +28,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class Transactions {
+public class Transactions{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO,generator = "uuid2")
 	@Getter
 	@Setter
-	@Column(name = "customerUuid",unique = true)
+	@Column(name = "transactionUuid",unique = true)
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
 	private UUID transactionUuid;
 	
@@ -66,7 +67,10 @@ public class Transactions {
 	@Setter
     private Long targetAccountId;
 	
+	@Enumerated(EnumType.STRING)
+	 @NotNull
+	    @Pattern(regexp = "VALID_PATTERN_REGEX")
 	@Getter
 	@Setter
-    private String status;
+    private Status_Type status;
 }

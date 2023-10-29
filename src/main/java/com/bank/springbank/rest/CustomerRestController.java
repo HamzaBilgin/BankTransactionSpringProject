@@ -48,10 +48,11 @@ public class CustomerRestController {
 	    	return responseHandler.resultMessageResponse( 400,new Object[]{"result", "Başarısız", "message", "Beklenmeye Hata"});
 	    }
 	}	
-	@GetMapping("/findCustomerById/{id}")
-	private ResponseEntity<Object> findCustomerById(
-			@PathVariable(name = "id") Long id) {
+	@PostMapping("/findCustomerById")
+	private ResponseEntity<Object> findCustomerById(@RequestBody Map<String, String> request) {
+		
 		try {
+			Long id = Long.parseLong(request.get("id"));
 			if(customerService.findCustomerById(id) != null) {
 				return responseHandler.resultMessageResponse( 200,new Object[]{"Customer", customerService.findCustomerById(id)});
 			}
@@ -74,16 +75,20 @@ public class CustomerRestController {
 			return responseHandler.resultMessageResponse( 400,new Object[]{"result", "Başarısız", "message", "Beklenmeye Hata"});
 		}
 	}		
-	@PutMapping("/updateCustomer/{id}")
-	public ResponseEntity<Object> updateCustomer(@RequestBody Customer customer, @PathVariable(name = "id") Long id) {	
+	@PostMapping("/updateCustomer")
+	public ResponseEntity<Object> updateCustomer(@RequestBody Map<String, String> request) {	
 		try {
-			
+			Long id = Long.parseLong(request.get("id"));
+			String name  = request.get("name");
+			String lastName  = request.get("lastName");
+			String newPassword  =  request.get("newPassword");
+			String bankAmount  = request.get("customerBankAmount");
 			if(customerService.findCustomerById(id) != null) {
 				Customer savedCustomer = customerService.findCustomerById(id);
-				String customerName = (customer.getName() == null) ? savedCustomer.getName() : customer.getName(); 
-				String customerLastName = (customer.getLastName() == null) ? savedCustomer.getLastName() : customer.getLastName(); 		
-				Integer customerBankAmount = (customer.getBankAmount() == null) ? savedCustomer.getBankAmount() : customer.getBankAmount();
-				Integer customerPassword = (customer.getNewPassword() == null) ? savedCustomer.getPassword() : customer.getNewPassword();
+				String customerName = (name == null) ? savedCustomer.getName() : name; 
+				String customerLastName = (lastName == null) ? savedCustomer.getLastName() : lastName; 		
+				Integer customerBankAmount = (bankAmount == null) ? savedCustomer.getBankAmount() : Integer.parseInt(bankAmount);
+				String customerPassword = (newPassword == null) ? savedCustomer.getPassword() : newPassword;
 				
 				LocalTime localTimeNow = LocalTime.now();
 				LocalTime timeWithoutNanos = localTimeNow.withNano(0);
@@ -106,10 +111,11 @@ public class CustomerRestController {
 	}
 
 	
-	@DeleteMapping("/deleteCustomerById/{id}")
-	public ResponseEntity<Object> deleteCustomerById(@PathVariable(name = "id") Long id) {
+	@PostMapping("/deleteCustomerById")
+	public ResponseEntity<Object> deleteCustomerById(@RequestBody Map<String, String> request) {
 		
 		try {
+			Long id = Long.parseLong(request.get("id"));
 			if(customerService.deleteCustomerById(id) == true) {
 				return responseHandler.resultMessageResponse( 200,new Object[]{"result", true,"message", "Silme işlemi başarılı"});
 			}else {

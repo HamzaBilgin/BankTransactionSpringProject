@@ -45,7 +45,7 @@ public class BaseEntity {
 	@Column(length = 200, nullable = false)
 	@Getter
 	@Setter
-	private Integer password;
+	private String password;
 	
 	@Getter
 	@Setter
