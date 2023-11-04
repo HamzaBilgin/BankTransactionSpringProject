@@ -28,49 +28,48 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class Transactions{
-	
+public class Transactions {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO,generator = "uuid2")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")
 	@Getter
 	@Setter
-	@Column(name = "transactionUuid",unique = true)
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(name = "transactionUuid", unique = true)
+	@GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
 	private UUID transactionUuid;
-	
-	
+
 //	@Id
 //	@GeneratedValue(strategy = GenerationType.AUTO,generator = "uuid2")
 //	@Column(unique = true,length = 11, nullable = false)
 //	@Getter
 //	@Setter
 //	private Long id;
-	
+
 	@Getter
 	@Setter
 	private LocalTime date;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Getter
 	@Setter
-    private Transaction_Type transactionType = Transaction_Type.MONEYTRANSFER;
-	
+	private Transaction_Type transactionType = Transaction_Type.MONEYTRANSFER;
+
 	@Getter
 	@Setter
-    private double amount;
-	
+	private double amount;
+
 	@Getter
 	@Setter
-    private Long sourceAccountId;
-	
+	private Long sourceAccountId;
+
 	@Getter
 	@Setter
-    private Long targetAccountId;
-	
+	private Long targetAccountId;
+
 	@Enumerated(EnumType.STRING)
-	 @NotNull
-	    @Pattern(regexp = "VALID_PATTERN_REGEX")
+	@NotNull
+	@Pattern(regexp = "VALID_PATTERN_REGEX")
 	@Getter
 	@Setter
-    private Status_Type status;
+	private Status_Type status;
 }
